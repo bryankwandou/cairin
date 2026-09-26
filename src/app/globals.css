@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+/*
+  Cairin's colour system.
+
+  Two ideas hold it together. Money is rendered in near-black on warm paper,
+  because a figure someone is about to send should look settled, not festive.
+  The green is reserved for the act of moving — buttons, progress, confirmation
+  — so colour always means something happened rather than decorating what did.
+
+  Every pairing below was chosen against WCAG AA. The light greens are fills
+  only; wherever green carries text it drops to --brand-ink, which clears 4.5:1
+  on paper.
+*/
+
+:root {
+  /* Surfaces. Paper is warm rather than pure white so the greens read alive. */
+  --paper: #fbfaf7;
+  --surface: #ffffff;
+  --surface-sunken: #f4f2ed;
+
+  /* Text. */
+  --ink: #0b0d0e;
+  --ink-muted: #5d6265;
+  --ink-faint: #8a8f92;
+
+  /* Lines. */
+  --line: #e6e2da;
+  --line-strong: #d3cec3;
+
+  /* Brand green: the colour of money arriving. */
+  --brand: #00a67e;
+  --brand-ink: #00674e; /* green that is safe to set text in */
+  --brand-bright: #00c48c; /* fills, never text on paper */
+  --brand-glow: #2be8a2; /* gradient stop, dark surfaces only */
+  --brand-wash: #e6f7f1; /* tinted panel background */
+
+  /* Rupiah gold, used only on amounts that have actually settled. */
+  --gold: #a06f0a;
+  --gold-fill: #e8b44a;
+  --gold-wash: #fbf3e0;
+
+  /* States. */
+  --danger: #b3261e;
+  --danger-wash: #fdecea;
+  --warn: #8a5a00;
+  --warn-wash: #fdf3e0;
+
+  --radius: 0.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0b0d0e;
+    --surface: #14181a;
+    --surface-sunken: #0f1213;
+
+    --ink: #f4f3f0;
+    --ink-muted: #a3a9ac;
+    --ink-faint: #6f7679;
+
+    --line: #242a2d;
+    --line-strong: #333b3f;
+
+    --brand: #2be8a2;
+    --brand-ink: #6ff0bf; /* on dark, the lighter tone is the readable one */
+    --brand-bright: #00c48c;
+    --brand-glow: #2be8a2;
+    --brand-wash: #0d2620;
+
+    --gold: #e8b44a;
+    --gold-fill: #e8b44a;
+    --gold-wash: #261d09;
+
+    --danger: #f2b8b5;
+    --danger-wash: #2b1210;
+    --warn: #f0c070;
+    --warn-wash: #2a1f08;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-bright: var(--brand-bright);
+  --color-brand-glow: var(--brand-glow);
+  --color-brand-wash: var(--brand-wash);
+
+  --color-gold: var(--gold);
+  --color-gold-fill: var(--gold-fill);
+  --color-gold-wash: var(--gold-wash);
+
+  --color-danger: var(--danger);
+  --color-danger-wash: var(--danger-wash);
+  --color-warn: var(--warn);
+  --color-warn-wash: var(--warn-wash);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-base: var(--radius);
+}
+
+* {
+  border-color: var(--line);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Slightly tighter than default: fintech copy reads denser and calmer. */
+  letter-spacing: -0.011em;
+}
+
+/*
+  Figures — balances, amounts, fees — are set in the mono face and lined up on
+  their digits. A column of rupiah that does not align is a column nobody
+  trusts.
+*/
+.tabular {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Focus that is visible on both surfaces without being loud. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--brand-bright);
+  color: #06231b;
+}
+
+/*
+  Motion. Everything below is decoration on top of a layout that already works
+  standing still, so switching it off costs nothing but the flourish.
+*/
+@keyframes cairin-drip {
+  0% {
+    transform: translateY(-6px) scale(0.92);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes cairin-sheen {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes cairin-pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-drip {
+  animation: cairin-drip 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-sheen {
+  background-size: 200% 100%;
+  animation: cairin-sheen 1.6s linear infinite;
+}
+
+.animate-pulse-ring {
+  animation: cairin-pulse-ring 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

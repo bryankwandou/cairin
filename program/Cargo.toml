@@ -1,0 +1,21 @@
+[package]
+name = "cairin-proof"
+version = "0.1.0"
+edition = "2021"
+description = "On-chain receipts for IDRX payouts settled by Cairin"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+pinocchio = { version = "0.11.2", default-features = false, features = ["cpi"] }
+pinocchio-system = "0.6.1"
+
+[profile.release]
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+overflow-checks = true
+strip = true
